@@ -1,0 +1,35 @@
+name: CD
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Update ArgoCD Application image tag
+      run: |
+        # This would typically update a Helm values file or Kustomize overlay
+        # For now, we just trigger ArgoCD sync via API
+        echo "ArgoCD will auto-sync from Git"
+
+    - name: Trigger ArgoCD Sync
+      if: ${{ secrets.ARGOCD_SERVER != '' }}
+      uses: actions/http-client@v1
+      with:
+        url: ${{ secrets.ARGOCD_SERVER }}/api/v1/applications/k8s-mcp-server/sync
+        method: POST
+        headers: |
+          Authorization: Bearer ${{ secrets.ARGOCD_TOKEN }}
+          Content-Type: application/json
+        body: '{"prune": true, "dryRun": false}'

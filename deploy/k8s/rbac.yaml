@@ -1,0 +1,37 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: k8s-mcp-server-reader
+  labels:
+    app: k8s-mcp-server
+rules:
+# Core resources for cluster health
+- apiGroups: [""]
+  resources: ["nodes", "pods", "namespaces", "events"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["nodes/metrics", "pods/metrics"]
+  verbs: ["get", "list"]
+# Metrics server
+- apiGroups: ["metrics.k8s.io"]
+  resources: ["nodes", "pods"]
+  verbs: ["get", "list"]
+# For custom metrics if needed
+- apiGroups: ["custom.metrics.k8s.io"]
+  resources: ["*"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: k8s-mcp-server-reader
+  labels:
+    app: k8s-mcp-server
+subjects:
+- kind: ServiceAccount
+  name: k8s-mcp-server
+  namespace: monitoring
+roleRef:
+  kind: ClusterRole
+  name: k8s-mcp-server-reader
+  apiGroup: rbac.authorization.k8s.io

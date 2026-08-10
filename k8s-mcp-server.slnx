@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Solution FileFormatVersion="1.0">
+  <Project Name="K8sMcpServer" Path="src/K8sMcpServer/K8sMcpServer.csproj" />
+  <Project Name="K8sMcpServer.Tests" Path="src/K8sMcpServer.Tests/K8sMcpServer.Tests.csproj" />
+  <Project Name="K8sMcpServer.Aspire" Path="src/K8sMcpServer.Aspire/K8sMcpServer.Aspire.csproj" />
+</Solution>
