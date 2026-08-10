@@ -28,7 +28,7 @@ spec:
         fsGroup: 65532
       containers:
       - name: k8s-mcp-server
-        image: your-registry/k8s-mcp-server:latest
+        image: ghcr.io/kijoyin/k8s-mcp-server:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
